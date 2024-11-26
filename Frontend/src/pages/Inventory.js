@@ -22,7 +22,7 @@ function Inventory() {
   useEffect(() => {
     fetchProductsData();
     fetchSalesData();
-  }, [updatePage]);
+  }, [updatePage, fetchProductsData, fetchSalesData]);
 
   // Fetching Data of All Products
   const fetchProductsData = () => {
@@ -240,6 +240,7 @@ function Inventory() {
                 type="file"
                 ref={fileInputRef}
                 className="hidden"
+                accept=".png, .jpeg, .jpg"
                 onChange={handleFileInputChange}
               />
             </div>
