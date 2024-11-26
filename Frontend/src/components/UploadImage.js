@@ -4,17 +4,6 @@ import QrScanner from 'qr-scanner';
 function UploadImage({ uploadImage }) {
   const [fileName, setFileName] = useState("");
 
-  const handleFileInputChange = async (event) => {
-    const file = event.target.files[0];
-    setFileName(file);
-    uploadImage(file);
-    if (file) {
-      const result = await QrScanner.scanImage(file);
-      const productDetails = JSON.parse(result);
-      console.log(productDetails);
-    }
-  };
-
   return (
     <div>
       <label

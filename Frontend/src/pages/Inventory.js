@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import AddProduct from "../components/AddProduct";
 import UpdateProduct from "../components/UpdateProduct";
 import AuthContext from "../AuthContext";
@@ -12,6 +12,7 @@ function Inventory() {
   const [searchTerm, setSearchTerm] = useState();
   const [updatePage, setUpdatePage] = useState(true);
   const [stores, setAllStores] = useState([]);
+  const fileInputRef = useRef(null);
 
   const authContext = useContext(AuthContext);
   console.log('====================================');
@@ -231,10 +232,16 @@ function Inventory() {
               </button>
               <button
                 className="bg-green-500 hover:bg-green-700 text-white font-bold p-2 text-xs  rounded"
-                onClick={handleFileInputChange}
+                onClick={() => fileInputRef.current.click()}
               >
                 Upload QR Code
               </button>
+              <input
+                type="file"
+                ref={fileInputRef}
+                className="hidden"
+                onChange={handleFileInputChange}
+              />
             </div>
           </div>
           <table className="min-w-full divide-y-2 divide-gray-200 text-sm">
