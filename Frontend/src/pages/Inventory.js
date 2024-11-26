@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import AddProduct from "../components/AddProduct";
 import UpdateProduct from "../components/UpdateProduct";
 import AuthContext from "../AuthContext";
+import QrScanner from 'qr-scanner';
 
 function Inventory() {
   const [showProductModal, setShowProductModal] = useState(false);
@@ -84,6 +85,20 @@ function Inventory() {
   const handleSearchTerm = (e) => {
     setSearchTerm(e.target.value);
     fetchSearchData();
+  };
+
+  const handleFileInputChange = async (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const result = await QrScanner.scanImage(file);
+      const productDetails = JSON.parse(result);
+      setProduct({
+        userId: authContext.user,
+        name: productDetails.name,
+        manufacturer: productDetails.manufacturer,
+        description: productDetails.description,
+      });
+    }
   };
 
   return (
@@ -213,6 +228,12 @@ function Inventory() {
               >
                 {/* <Link to="/inventory/add-product">Add Product</Link> */}
                 Add Product
+              </button>
+              <button
+                className="bg-green-500 hover:bg-green-700 text-white font-bold p-2 text-xs  rounded"
+                onClick={handleFileInputChange}
+              >
+                Upload QR Code
               </button>
             </div>
           </div>

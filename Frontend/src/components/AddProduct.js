@@ -3,6 +3,8 @@ import { Fragment, useContext, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { PlusIcon } from "@heroicons/react/24/outline";
 import AuthContext from "../AuthContext";
+import UploadImage from "./UploadImage";
+import QrScanner from 'qr-scanner';
 
 export default function AddProduct({
   addProductModalSetting,
@@ -21,6 +23,20 @@ export default function AddProduct({
 
   const handleInputChange = (key, value) => {
     setProduct({ ...product, [key]: value });
+  };
+
+  const handleFileInputChange = async (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const result = await QrScanner.scanImage(file);
+      const productDetails = JSON.parse(result);
+      setProduct({
+        userId: authContext.user,
+        name: productDetails.name,
+        manufacturer: productDetails.manufacturer,
+        description: productDetails.description,
+      });
+    }
   };
 
   const addProduct = () => {
@@ -193,6 +209,7 @@ export default function AddProduct({
                           </div>
                         </div>
                         <div className="flex items-center space-x-4">
+                          <UploadImage uploadImage={handleFileInputChange} />
                           {/* <button
                             type="submit"
                             className="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"

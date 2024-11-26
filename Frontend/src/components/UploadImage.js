@@ -1,11 +1,18 @@
 import React, { useState } from "react";
+import QrScanner from 'qr-scanner';
 
 function UploadImage({ uploadImage }) {
   const [fileName, setFileName] = useState("");
 
-  const handleFileInputChange = (event) => {
-    setFileName(event.target.files[0]);
-    uploadImage(event.target.files[0]);
+  const handleFileInputChange = async (event) => {
+    const file = event.target.files[0];
+    setFileName(file);
+    uploadImage(file);
+    if (file) {
+      const result = await QrScanner.scanImage(file);
+      const productDetails = JSON.parse(result);
+      console.log(productDetails);
+    }
   };
 
   return (
